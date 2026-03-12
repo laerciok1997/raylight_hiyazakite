@@ -307,7 +307,7 @@ def usp_double_stream_forward(
     del txt_qkv
     txt_q, txt_k = self.txt_attn.norm(txt_q, txt_k, txt_v)
 
-    if self.flipped_img_txt:
+    if getattr(self, "flipped_img_txt", False):
         img_q, img_k = apply_rope(img_q, img_k, pe)
         q = torch.cat((img_q, txt_q), dim=2)
         del img_q, txt_q
