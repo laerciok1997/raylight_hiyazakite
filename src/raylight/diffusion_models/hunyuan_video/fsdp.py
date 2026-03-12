@@ -78,7 +78,8 @@ def shard_model_fsdp2(model, model_state_dict, enable_cpu_offload):
     # If broadcast_from_rank0 is True, only rank 0 needs to load the state dict.
     # Other ranks can clear their local state dict to save massive amounts of RAM/VRAM.
     if dist.is_initialized() and dist.get_rank() > 0:
-        model_state_dict.clear()
+        if model_state_dict is not None:
+            model_state_dict.clear()
 
     set_model_state_dict(
         model=model,
